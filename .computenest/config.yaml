@@ -1,0 +1,86 @@
+Service:
+  RegionId: cn-hangzhou
+  DeployType: ros
+  DeployMetadata:
+    ServiceInstanceNameRule:
+      Prefix: volcano-
+    SupplierDeployMetadata:
+      HelmChartArtifactRelation:
+        '{{ computenest::helmchart::volcano }}':
+          ArtifactId: ${Artifact.Artifact_HelmChart_Volcano.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_HelmChart_Volcano.ArtifactVersion}
+      AcrImageArtifactRelation:
+        '{{ computenest::acrimage::controller }}':
+          ArtifactId: ${Artifact.Artifact_AcrImage_VcControllerManager.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_AcrImage_VcControllerManager.ArtifactVersion}
+        '{{ computenest::acrimage::scheduler }}':
+          ArtifactId: ${Artifact.Artifact_AcrImage_VcScheduler.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_AcrImage_VcScheduler.ArtifactVersion}
+        '{{ computenest::acrimage::admission }}':
+          ArtifactId: ${Artifact.Artifact_AcrImage_VcWebhookManager.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_AcrImage_VcWebhookManager.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 模版1
+        Url: 'ros_templates/template.yaml'
+        AllowedRegions: []
+  ServiceType: private
+  ServiceInfo:
+    Locale: zh-CN
+    ShortDescription: Volcano是CNCF 下首个也是唯一的基于Kubernetes的容器批量计算平台，主要用于高性能计算场景。它提供了Kubernetes目前缺 少的一套机制，这些机制通常是机器学习大数据应用、科学计算、特效渲染等多种高性能工作负载所需的。作为一个通用批处理平台，Volcano与几乎所有的主流计算框 架无缝对接，如Spark 、TensorFlow 、PyTorch 、 Flink 、Argo 、MindSpore 、 PaddlePaddle 等。它还提供了包括基于各种主流架构的CPU、GPU在内的异构设备混合调度能力。
+    Image: 'resources/icons/service_logo.png'
+    Name: Volcano社区版test
+  ShareType: Public
+  ApprovalType: Manual
+Artifact:
+  Artifact_HelmChart_Volcano:
+    ArtifactType: HelmChart
+    ArtifactName: Volcano
+    Description: Volcano HelmChart部署物
+    ArtifactProperty:
+      RepoName: ${HelmChartBuilder.HelmChart_Volcano.RepoName}
+      Tag: ${HelmChartBuilder.HelmChart_Volcano.Tag}
+  Artifact_AcrImage_VcControllerManager:
+    ArtifactType: AcrImage
+    ArtifactName: VcControllerManager
+    Description: VcControllerManager AcrImage部署物
+    ArtifactProperty:
+      RepoName: ${AcrImageBuilder.AcrImage_VcControllerManager.RepoName}
+      Tag: ${AcrImageBuilder.AcrImage_VcControllerManager.Tag}
+  Artifact_AcrImage_VcScheduler:
+    ArtifactType: AcrImage
+    ArtifactName: VcScheduler
+    Description: VcScheduler AcrImage部署物
+    ArtifactProperty:
+      RepoName: ${AcrImageBuilder.AcrImage_VcScheduler.RepoName}
+      Tag: ${AcrImageBuilder.AcrImage_VcScheduler.Tag}
+  Artifact_AcrImage_VcWebhookManager:
+    ArtifactType: AcrImage
+    ArtifactName: VcWebhookManager
+    Description: VcWebhookManager AcrImage部署物
+    ArtifactProperty:
+      RepoName: ${AcrImageBuilder.AcrImage_VcWebhookManager.RepoName}
+      Tag: ${AcrImageBuilder.AcrImage_VcWebhookManager.Tag}
+HelmChartBuilder:
+  HelmChart_Volcano:
+    BuildType: HelmRepo
+    HelmRepoUrl: https://volcano-sh.github.io/helm-charts
+    # HelmChartPath: 'resources/artifact_resources/helm_chart/wordpress-15.4.1.tgz'
+    RepoName: volcano
+    Tag: 1.9.0
+AcrImageBuilder:
+  AcrImage_VcControllerManager:
+    BuildType: DockerRepo
+    DockerRepoUrl: 'volcanosh/vc-controller-manager:v1.9.0'
+    # DockerFilePath: 'resources/artifact_resources/acr_image/Dockerfile'
+    RepoName: volcanosh/vc-controller-manager
+    Tag: v1.9.0
+  AcrImage_VcScheduler:
+    BuildType: DockerRepo
+    DockerRepoUrl: 'volcanosh/vc-scheduler:v1.9.0'
+    RepoName: volcanosh/vc-scheduler
+    Tag: v1.9.0
+  AcrImage_VcWebhookManager:
+    BuildType: DockerRepo
+    DockerRepoUrl: 'volcanosh/vc-webhook-manager:v1.9.0'
+    RepoName: volcanosh/vc-webhook-manager
+    Tag: v1.9.0

@@ -1,3 +1,4 @@
-site_name: Aliyun 计算巢 x Demo
+site_name: Aliyun 计算巢 x valcano
 theme: 
   name: aliyuncomputenest
+docs_dir: .computenest/docs
