@@ -386,9 +386,24 @@ Resources:
       DockerConfigJson: '{{ computenest::helm::dockerconfigjson }}'
       ChartValues:
         basic:
-          controller_image_name: "!Select [0, !Split [':', {{ computenest::acrimage::controller }}]]"
-          scheduler_image_name: "!Select [0, !Split [':', {{ computenest::acrimage::scheduler }}]]"
-          admission_image_name: "!Select [0, !Split [':', {{ computenest::acrimage::admission }}]]"
+          controller_image_name:
+            Fn::Select:
+              - 0
+              - Fn::Split:
+                  - ':'
+                  - '{{ computenest::acrimage::controller }}'
+          scheduler_image_name:
+            Fn::Select:
+              - 0
+              - Fn::Split:
+                  - ':'
+                  - '{{ computenest::acrimage::scheduler }}'
+          admission_image_name:
+            Fn::Select:
+              - 0
+              - Fn::Split:
+                  - ':'
+                  - '{{ computenest::acrimage::admission }}'
           image_pull_secret: computenestrepo
       Namespace:
         Ref: 'ALIYUN::StackName'
