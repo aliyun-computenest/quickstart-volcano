@@ -64,14 +64,12 @@ HelmChartBuilder:
   HelmChart_Volcano:
     BuildType: HelmRepo
     HelmRepoUrl: https://volcano-sh.github.io/helm-charts
-    # HelmChartPath: 'resources/artifact_resources/helm_chart/wordpress-15.4.1.tgz'
     RepoName: volcano
     Tag: 1.9.0
 AcrImageBuilder:
   AcrImage_VcControllerManager:
     BuildType: DockerRepo
     DockerRepoUrl: 'volcanosh/vc-controller-manager:v1.9.0'
-    # DockerFilePath: 'resources/artifact_resources/acr_image/Dockerfile'
     RepoName: volcanosh/vc-controller-manager
     Tag: v1.9.0
   AcrImage_VcScheduler:

@@ -404,7 +404,14 @@ Resources:
               - Fn::Split:
                   - ':'
                   - '{{ computenest::acrimage::admission }}'
+          image_tag_version:
+            Fn::Select:
+              - -1
+              - Fn::Split:
+                  - ':'
+                  - '{{ computenest::acrimage::admission }}'
           image_pull_secret: computenestrepo
+          image_pull_policy: IfNotPresent
       Namespace:
         Ref: 'ALIYUN::StackName'
       ReleaseName: volcano
