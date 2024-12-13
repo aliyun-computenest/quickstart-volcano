@@ -3,23 +3,32 @@ Description:
   en: 新建ack部署
   zh-cn: new ack
 Parameters:
-  CreateAck:
-    Type: Boolean
-    Description:
-      en: An existing ack cluster can be deployed by entering the cluster id. If there is no current cluster, create a new ack cluster before deploying
-      zh-cn: 已有ack集群输入集群id即可部署，当前无集群先新建ack集群再进行部署
+  AckOptions:
+    Type: String
+    AllowedValues:
+      - ExistingACK
+      - NewACK
+    AssociationPropertyMetadata:
+      ValueLabelMapping:
+        ExistingACK:
+          zh-cn: 已有容器集群
+          en: New ACK
+        NewACK:
+          zh-cn: 新建容器集群
+          en: Existing ACK
     Label:
-      en: Wether create ack cluster
-      zh-cn: 是否新建ack集群
-    Default: true
+      en: Select Existing or New Kubernetes
+      zh-cn: 选择已有/新建的容器集群
+    Required: true
+    Default: ExistingACK
   ClusterId:
     Type: String
     Description:
       en: The ID of Kubernetes ClusterId in which application deployed.
       zh-cn: 部署应用程序的K8s集群ID
     AllowedPattern: '[0-9a-z]+$'
-    Required: true
     Default: null
+    Required: true
     Label:
       en: Kubernetes ClusterId
       zh-cn: K8s集群ID
@@ -29,8 +38,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - false
+            - ${AckOptions}
+            - ExistingACK
   PayType:
     Type: String
     Label:
@@ -46,8 +55,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
   PayPeriodUnit:
     Type: String
     Label:
@@ -63,17 +72,14 @@ Parameters:
         Condition:
           Fn::And:
             - Fn::Equals:
-                - ${CreateAck}
-                - true
+                - ${AckOptions}
+                - NewACK
             - Fn::Not:
                 Fn::Equals:
                   - ${PayType}
                   - PostPaid
   PayPeriod:
     Type: Number
-    Description:
-      en: When the resource purchase duration is Month, the value of Period ranges from 1 to 9, 12, 24, 36, 48, or 60. <br><b><font color='red'> When ECS instance types are PrePaid valid </b></font>
-      zh-cn: 当购买资源时长为Month时，Period取值：1~9 <br><b><font color='red'>当ECS实例类型为PrePaid有效</b></font>
     Label:
       en: Period
       zh-cn: 购买资源时长
@@ -94,8 +100,8 @@ Parameters:
         Condition:
           Fn::And:
             - Fn::Equals:
-                - ${CreateAck}
-                - true
+                - ${AckOptions}
+                - NewACK
             - Fn::Not:
                 Fn::Equals:
                   - ${PayType}
@@ -111,8 +117,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
   VpcId:
     Type: String
     Label:
@@ -130,8 +136,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
   VSwitchId:
     Type: String
     Label:
@@ -150,8 +156,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
   LoginPassword:
     NoEcho: true
     Type: String
@@ -169,8 +175,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
     AllowedPattern: ^[a-zA-Z0-9-\(\)\`\~\!\@\#\$\%\^\&\*\_\-\+\=\|\{\}\[\]\:\;\<\>\,\.\?\/]*$
     MinLength: 8
     MaxLength: 30
@@ -182,12 +188,11 @@ Parameters:
       zh-cn: Worker节点规格
     AssociationProperty: ALIYUN::ECS::Instance::InstanceType
     AssociationPropertyMetadata:
-      ZoneId: ${ZoneId}
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
     Default: ecs.g6.large
   WorkerSystemDiskCategory:
     Type: String
@@ -195,14 +200,15 @@ Parameters:
       - cloud_efficiency
       - cloud_ssd
       - cloud_essd
+    AssociationProperty: ALIYUN::ECS::Disk::SystemDiskCategory
     AssociationPropertyMetadata:
       LocaleKey: DiskCategory
       InstanceType: ${WorkerInstanceType}
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
     Label:
       en: Worker System Disk Category
       zh-cn: Worker 系统盘磁盘类型
@@ -218,8 +224,23 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
+  AckNetworkPlugin:
+    Type: String
+    Label:
+      en: ack plugin network
+      zh-cn: ack网络插件
+    AllowedValues:
+      - Flannel
+      - Terway
+    AssociationPropertyMetadata:
+      Visible:
+        Condition:
+          Fn::Equals:
+            - ${AckOptions}
+            - NewACK
+    Default: Flannel
   PodCidr:
     Type: String
     Description:
@@ -232,10 +253,38 @@ Parameters:
     AssociationPropertyMetadata:
       Visible:
         Condition:
-          Fn::Equals:
-            - ${CreateAck}
-            - true
-    Default: 10.0.0.0/16
+          Fn::And:
+            - Fn::Equals:
+                - ${AckOptions}
+                - NewACK
+            - Fn::Equals:
+                - ${AckNetworkPlugin}
+                - Flannel
+    Default: 172.20.0.0/20
+  PodVswitchId:
+    Type: String
+    Label:
+      en: VSwitch ID
+      zh-cn: pod交换机实例ID
+    Description:
+      en: >-
+        Instance ID of existing business network switches, console-Virtual
+        Private Cloud-VSwitches under query
+      zh-cn: 建议选择网段掩码不大于 19 的虚拟交换机
+    Default: ''
+    AssociationProperty: 'ALIYUN::ECS::VSwitch::VSwitchId'
+    AssociationPropertyMetadata:
+      VpcId: '${VpcId}'
+      ZoneId: '${ZoneId}'
+      Visible:
+        Condition:
+          Fn::And:
+            - Fn::Equals:
+                - ${AckOptions}
+                - NewACK
+            - Fn::Equals:
+                - ${AckNetworkPlugin}
+                - Terway
   ServiceCidr:
     Type: String
     Description:
@@ -246,24 +295,17 @@ Parameters:
       en: Service CIDR
     AssociationProperty: ALIYUN::CS::ManagedKubernetesCluster::ServiceCidr
     AssociationPropertyMetadata:
-      VpcId: ${VpcId}
-      RegionId: ${RegionId}
-      ClusterType: ManagedKubernetes
-      NodeCidrMask: 26
-      Addons:
-        - name: flannel
-      ContainerCidr: ${PodCidr}
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - true
+            - ${AckOptions}
+            - NewACK
     Default: 172.16.0.0/16
 Conditions:
   CreateAck:
     Fn::Equals:
-      - true
-      - Ref: CreateAck
+      - NewACK
+      - Ref: AckOptions
 Resources:
   VpcsDataSource:
     Type: DATASOURCE::VPC::Vpcs
@@ -436,7 +478,7 @@ Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
       - Parameters:
-          - CreateAck
+          - AckOptions
           - ClusterId
         Label:
           en: Whether create ack
@@ -449,6 +491,17 @@ Metadata:
           en: PayType Configuration
           zh-cn: 付费类型配置
       - Parameters:
+          - WorkerInstanceType
+          - WorkerSystemDiskCategory
+          - WorkerSystemDiskSize
+          - AckNetworkPlugin
+          - PodCidr
+          - PodVswitchId
+          - ServiceCidr
+        Label:
+          en: Kubernetes
+          zh-cn: Kubernetes配置
+      - Parameters:
           - ZoneId
           - VpcId
           - VSwitchId
@@ -456,13 +509,3 @@ Metadata:
         Label:
           en: Basic Configuration
           zh-cn: 基础配置
-      - Parameters:
-          - WorkerInstanceType
-          - WorkerSystemDiskCategory
-          - WorkerSystemDiskSize
-          - PodCidr
-          - PodVswitchId
-          - ServiceCidr
-        Label:
-          en: Kubernetes
-          zh-cn: Kubernetes配置
