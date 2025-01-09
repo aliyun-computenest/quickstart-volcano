@@ -2,7 +2,8 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.15.0
+    controller-gen.kubebuilder.io/version: v0.6.0
+  creationTimestamp: null
   name: queues.scheduling.volcano.sh
 spec:
   group: scheduling.volcano.sh
@@ -22,26 +23,20 @@ spec:
         description: Queue is a queue of PodGroup.
         properties:
           apiVersion:
-            description: |-
-              APIVersion defines the versioned schema of this representation of an object.
-              Servers should convert recognized schemas to the latest internal value, and
-              may reject unrecognized values.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: |-
-              Kind is a string value representing the REST resource this object represents.
-              Servers may infer this from the endpoint the client submits requests to.
-              Cannot be updated.
-              In CamelCase.
-              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
-            description: |-
-              Specification of the desired behavior of the queue.
-              More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status
+            description: 'Specification of the desired behavior of the queue. More
+              info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status'
             properties:
               affinity:
                 description: If specified, the pod owned by the queue will be scheduled
@@ -135,11 +130,6 @@ spec:
               parent:
                 description: Parent define the parent of queue
                 type: string
-              priority:
-                description: Priority define the priority of queue. Higher values
-                  are prioritized for scheduling and considered later during reclamation.
-                format: int32
-                type: integer
               reclaimable:
                 description: Reclaimable indicate whether the queue can be reclaimed
                   by other queue
@@ -214,3 +204,9 @@ spec:
     storage: true
     subresources:
       status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

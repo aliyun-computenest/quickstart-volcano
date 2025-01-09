@@ -5,10 +5,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-pods-mutate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -53,10 +49,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-queues-mutate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -102,10 +94,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-podgroups-mutate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -151,10 +139,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-jobs-mutate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -200,10 +184,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-jobs-validate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -249,10 +229,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-pods-validate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1
@@ -297,10 +273,6 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: volcano-admission-service-queues-validate
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 webhooks:
   - admissionReviewVersions:
       - v1

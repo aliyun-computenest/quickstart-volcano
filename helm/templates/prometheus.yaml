@@ -3,10 +3,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: prometheus-volcano
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 rules:
 - apiGroups: [""]
   resources:
@@ -29,10 +25,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: prometheus-volcano
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -48,9 +40,6 @@ metadata:
   name: prometheus-server-conf
   labels:
     name: prometheus-server-conf
-    {{- if .Values.custom.common_labels }}
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-    {{- end }}
   namespace: {{ .Release.Namespace }}
 data:
   prometheus.rules: |-
@@ -205,9 +194,6 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: prometheus-server
-    {{- if .Values.custom.common_labels }}
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -217,9 +203,6 @@ spec:
     metadata:
       labels:
         app: prometheus-server
-        {{- if .Values.custom.common_labels }}
-        {{- toYaml .Values.custom.common_labels | nindent 8 }}
-        {{- end }}
     spec:
       containers:
         - name: prometheus
@@ -248,10 +231,6 @@ kind: Service
 metadata:
   name: prometheus-service
   namespace: {{ .Release.Namespace }}
-  {{- if .Values.custom.common_labels }}
-  labels:
-    {{- toYaml .Values.custom.common_labels | nindent 4 }}
-  {{- end }}
   annotations:
       prometheus.io/scrape: 'true'
       prometheus.io/port:   '9090'
