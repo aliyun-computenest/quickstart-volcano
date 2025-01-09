@@ -499,14 +499,22 @@ Resources:
         Ref: 'ALIYUN::StackName'
       ReleaseName: volcano
 Outputs:
-  Instruction:
+  Endpoint:
     Description:
-      zh-cn: 使用说明
-      en: Instruction
+      zh-cn: ack集群链接
+      en: Ack Cluster Addresses
     Value:
-      Fn::GetAtt:
-        - FluxHelmApplicationModule
-        - HelmOutput
+      Fn::Sub:
+        - https://cs.console.aliyun.com/?spm=5176.181001.J_5253785160.4.75db4e26fb3rOG#/k8s/cluster/${ClusterId}/v2/workload/deployment/list?type=deployment&ns=${Namespace}
+        - ClusterId:
+            Fn::If:
+              - CreateAck
+              - Fn::GetAtt:
+                  - ManagedKubernetesCluster
+                  - ClusterId
+              - Ref: ClusterId
+          Namespace:
+            Ref: ALIYUN::StackName
 Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
