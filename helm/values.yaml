@@ -9,7 +9,7 @@ basic:
   image_pull_policy: "Always"
   image_tag_version: "v1.10.0"
   admission_port: 8443
-  image_registry: "compute-nest-registry.cn-hangzhou.cr.aliyuncs.com"
+  image_registry: "compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618"
 custom:
   metrics_enable: false
   admission_enable: true
