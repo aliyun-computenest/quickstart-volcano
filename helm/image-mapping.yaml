@@ -1,0 +1,4 @@
+image-mapping:
+- docker.io/volcanosh/vc-scheduler:v1.10.0: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618/volcanosh/vc-scheduler:v1.10.0
+- docker.io/volcanosh/vc-webhook-manager:v1.10.0: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618/volcanosh/vc-webhook-manager:v1.10.0
+- docker.io/volcanosh/vc-controller-manager:v1.10.0: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618/volcanosh/vc-controller-manager:v1.10.0

@@ -8,7 +8,6 @@ Parameters:
     AllowedValues:
       - ExistCs
       - NewAck
-      - NewAcs
     AssociationPropertyMetadata:
       ValueLabelMapping:
         ExistCs:
@@ -17,9 +16,6 @@ Parameters:
         NewAck:
           zh-cn: 新建ACK集群
           en: New ACK
-        NewAcs:
-          zh-cn: 新建ACS集群
-          en: New ACS
     Label:
       en: Cluster Option
       zh-cn: 集群选项

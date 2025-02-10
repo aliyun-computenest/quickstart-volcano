@@ -9,7 +9,7 @@ basic:
   image_pull_policy: "Always"
   image_tag_version: "v1.10.0"
   admission_port: 8443
-  image_registry: "docker.io"
+  image_registry: "compute-nest-registry.cn-hangzhou.cr.aliyuncs.com"
 custom:
   metrics_enable: false
   admission_enable: true
