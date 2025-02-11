@@ -501,7 +501,7 @@ Outputs:
       en: Ack Cluster Addresses
     Value:
       Fn::Sub:
-        - https://cs.console.aliyun.com/k8s/cluster/${ClusterId}/v2/workload/deployment/list?type=deployment&ns=${Namespace}
+        - https://csnew.console.aliyun.com/?spm=5176.181001.J_5253785160.4.75db4e26fb3rOG#/k8s/cluster/${ClusterId}/v2/workload/deployment/list?type=deployment&ns=${Namespace}
         - ClusterId:
             Fn::GetAtt:
               - AckOrAcsClusterModule
